@@ -4,10 +4,10 @@ import Tarea from './Tarea';
 const ListadoTareas = () => {
 
     const tareasProyecto =[
-        {nombre:'Elegir Plataforma', estado:true},
-        {nombre:'Elegir Colores', estado:false},
-        {nombre:'Elegir Plataforma de pago', estado:true},
-        {nombre:'Elegir Hosting', estado:false}
+        { id:'#1', nombre:'Elegir Plataforma', estado:true},
+        { id:'#2', nombre:'Elegir Colores', estado:false},
+        { id:'#3', nombre:'Elegir Plataforma de pago', estado:true},
+        { id:'#4', nombre:'Elegir Hosting', estado:false}
     ];
 
 
@@ -20,6 +20,7 @@ const ListadoTareas = () => {
                 <li className="tarea">No hay tareas</li>
             ): tareasProyecto.map(tarea =>(
                 <Tarea
+                key={tarea.id}
                     tarea={tarea}
                 />
             ))}
