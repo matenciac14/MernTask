@@ -1,4 +1,5 @@
-import React,{useReducer} from 'react'
+import React,{useReducer} from 'react';
+import { v4 as uuidv4 } from "uuid";
 
 import proyectoContext from './proyectoContext';
 import proyectoReducer from './proyectoReducer';
@@ -6,18 +7,21 @@ import proyectoReducer from './proyectoReducer';
 //types
 import {
     FORMUALIO_PROYECTO,
-    OBTENER_PROYECTOS
+    OBTENER_PROYECTOS,
+    AGREGAR_PROYECTOS
 } from '../../types';
 
 
-const proyectos =[
-    { id:1, nombre:'Tienda Virtual' },
-            { id:2, nombre:'Internet' },
-            { id:3, nombre:'Diseno de sitio web' },
-            { id:4, nombre:'MERN'}
-];
+
 
 const ProyectoState = props => {
+    const proyectos =[
+        { id:1, nombre:'Tienda Virtual' },
+                { id:2, nombre:'Internet' },
+                { id:3, nombre:'Diseno de sitio web' },
+                { id:4, nombre:'MERN'}
+    ];
+
     const initialState = {
         proyectos : [],
         formulario : false
@@ -34,12 +38,23 @@ const ProyectoState = props => {
         })
     }
 
-    //get the projets
-    const obtenerProyectos = proyectos =>{
+    //obtener proyectos
+    const obtenerProyectos = () =>{
         dispatch({
             type: OBTENER_PROYECTOS,
             payload: proyectos
         })
+    }
+
+    // aregar proyecto
+    const  agregarProyecto = (proyecto) =>{
+        proyecto.id = uuidv4();
+
+        dispatch({
+            type: AGREGAR_PROYECTOS,
+            payload : proyecto
+        })
+
     }
 
     return(
@@ -47,7 +62,9 @@ const ProyectoState = props => {
             value={{
                 proyectos: state.proyectos,
                 formulario : state.formulario,
-                mostrarFormulario
+                mostrarFormulario,
+                obtenerProyectos,
+                agregarProyecto
             }}
         >
             {props.children}
