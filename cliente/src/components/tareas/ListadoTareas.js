@@ -29,7 +29,7 @@ const {tareasproyecto} = tareasContext;
                 <li className="tarea">No hay tareas</li>
             ): tareasproyecto.map(tarea =>(
                 <Tarea
-                key={tarea.id}
+                    key={tarea.id}
                     tarea={tarea}
                 />
             ))}
