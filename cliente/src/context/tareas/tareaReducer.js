@@ -2,7 +2,10 @@ import {
     TAREAS_PROYECTO,
     AGREGAR_TAREA,
     VALIDAR_TAREA,
-    ELIMINAR_TAREA
+    ELIMINAR_TAREA,
+    ESTADO_TAREA,
+    TAREA_ACTUAL,
+    ACTUALIZAR_TAREA
 
 } from '../../types';
 
@@ -16,7 +19,7 @@ export default (state, action) => {
         case AGREGAR_TAREA:
             return{
                 ...state,
-                tareas: [...state.tareas, action.payload],
+                tareas: [action.payload,...state.tareas ],
                 errortarea: false
 
             }
@@ -30,8 +33,19 @@ export default (state, action) => {
                 ...state,
                 tareas :state.tareas.filter(tarea => tarea.id !== action.payload)
             }
-        
-    
+        case ACTUALIZAR_TAREA:
+        case ESTADO_TAREA:
+            return{
+                ...state,
+                tareas: state.tareas.map(tarea => tarea.id === action.payload.id ? action.payload : tarea),
+                tareaseleccionada: null
+            }
+        case TAREA_ACTUAL:
+            return{
+                ...state,
+                tareaseleccionada : action.payload
+            }
+
         default:
             break;
     }
