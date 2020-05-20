@@ -13,7 +13,8 @@ app.use(express.json({extended:true}));
 const PORT = process.envPORT || 4000;
 
 //import routes
-app.use('/api/users',require('./routes/users'))
+app.use('/api/users',require('./routes/users'));
+app.use('/api/auth',require('./routes/auth'));
 
 //start app
 app.listen(PORT, () =>{
