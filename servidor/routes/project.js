@@ -10,12 +10,25 @@ router.get('/',
 );
 
 router.post('/',
-//validator
-    [
-        check('name','the project name is obligatory').not().isEmpty(),
-    ],
     autentication,
+    //validator
+    [
+        check('name','the project name is obligatory').not().isEmpty()
+    ],
     projectController.createProject
+);
+
+router.put('/:id',    
+    autentication,
+    [
+        check('name','the project name is obligatory').not().isEmpty()
+    ],
+    projectController.updateProject
+);
+
+router.delete('/:id',    
+    autentication,
+    projectController.deleteProject
 );
 
 module.exports = router;
