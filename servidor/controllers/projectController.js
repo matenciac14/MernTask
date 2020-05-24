@@ -13,6 +13,7 @@ exports.getProjects = async (req, res) =>{
     }
 }
 
+//create a new project
 exports.createProject = async (req, res) =>{
     //view the error
     const errors = validationResult(req);
@@ -69,7 +70,7 @@ exports.updateProject = async(req, res) =>{
     }
 }
 
-
+//delete a project by id
 exports.deleteProject = async( req, res ) =>{
     try {
         //review id 
