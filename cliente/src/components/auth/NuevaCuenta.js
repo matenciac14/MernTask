@@ -1,25 +1,41 @@
-import React,{useState, useContext} from 'react';
+import React,{useState, useContext, useEffect} from 'react';
 import {Link} from 'react-router-dom';
-import AlertaContext from '../../context/alertas/alertasContext'
+import AlertaContext from '../../context/alertas/alertasContext';
+import AuthContext from '../../context/autenticacion/authContext';
 
 
 
 
-const NuevaCuenta  = () => {
+const NuevaCuenta  = (props) => {
     //extraemos valores de alertas
     const alertaContext = useContext(AlertaContext);
     const {alerta, mostrarAlerta} = alertaContext;
 
+    //context autenticacion
+    const authContext = useContext(AuthContext);
+    const {mensaje, autenticado,registrarUsuario} = authContext;
+
+    //registro duplicado
+    useEffect(() => {
+        if(autenticado){
+            props.history.push('/proyectos')
+        }
+        if(mensaje){
+        mostrarAlerta(mensaje.msg, mensaje.categoria);
+   
+        }
+        //eslint-disable-next-line
+    }, [mensaje, autenticado, props.history])
 
     //state para iniciar sesion
     const[usuario, guardarUsuario] = useState({
-        nombre:"",
+        name:"",
         email :'',
         password :'',
         confirmar:''
     });
     //extraer de usuario
-    const {nombre, email, password, confirmar } = usuario;
+    const {name, email, password, confirmar } = usuario;
 
 
     //funcion lee formulario
@@ -35,7 +51,7 @@ const NuevaCuenta  = () => {
         e.preventDefault();
 
         //validacion
-        if(nombre.trim()===''|| email.trim()==='' || password.trim()==='' || confirmar.trim()===''){
+        if(name.trim()===''|| email.trim()==='' || password.trim()==='' || confirmar.trim()===''){
             mostrarAlerta('Todos los Campos son Obligatorios', 'alerta-error');
             return;
         }
@@ -54,7 +70,12 @@ const NuevaCuenta  = () => {
         }
 
         //pasar al action
-        
+        registrarUsuario({
+            name,
+            email,
+            password
+        })
+
 
     }
 
@@ -72,13 +93,13 @@ const NuevaCuenta  = () => {
                     onSubmit={onsubmit}
                 >   
                      <div className="campo-form">
-                        <label htmlFor="nombre">Nombre</label>
+                        <label htmlFor="name">Nombre</label>
                         <input 
                             type="text"
                             id='nombre'
-                            name='nombre'
+                            name='name'
                             placeholder='Tu nombre'
-                            value={nombre}
+                            value={name}
                             onChange={onChange}
                         />
                     </div>

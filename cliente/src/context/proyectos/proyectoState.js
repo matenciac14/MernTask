@@ -1,8 +1,8 @@
 import React,{useReducer} from 'react';
-import { v4 as uuidv4 } from "uuid";
 
 import proyectoContext from './proyectoContext';
 import proyectoReducer from './proyectoReducer';
+import clienteAxios from '../../config/axios';
 
 //types
 import {
@@ -11,25 +11,21 @@ import {
     AGREGAR_PROYECTOS,
     VALIDAR_FORMULARIO,
     PROYECTO_ACTUAL,
-    ELIMINAR_PROYECTO
+    ELIMINAR_PROYECTO,
+    PROYECTO_ERROR
+
 } from '../../types';
 
 
 
 
 const ProyectoState = props => {
-    const proyectos =[
-        { id:1, nombre:'Tienda Virtual' },
-                { id:2, nombre:'Internet' },
-                { id:3, nombre:'Diseno de sitio web' },
-                { id:4, nombre:'MERN'}
-    ];
-
     const initialState = {
-        proyectos : [],
+        projects : [],
         formulario : false,
         errorformulario:false,
-        proyecto : null
+        project : null,
+        mensaje:null
         
     }
     //dispatch para ejecutar acciones
@@ -44,21 +40,45 @@ const ProyectoState = props => {
     }
 
     //obtener proyectos
-    const obtenerProyectos = () =>{
-        dispatch({
-            type: OBTENER_PROYECTOS,
-            payload: proyectos
-        })
+    const obtenerProyectos = async () =>{
+        try {
+            const resultado = await clienteAxios.get('/api/projects');
+
+            dispatch({
+                type: OBTENER_PROYECTOS,
+                payload: resultado.data.projects
+            })
+        } catch (error) {
+            const alerta ={
+                msg:"Error, can't delete",
+                categoria: 'alerta-error'
+            }
+            dispatch({
+                type:PROYECTO_ERROR,
+                payload:alerta
+            })
+        }
     }
 
     // aregar proyecto
-    const  agregarProyecto = (proyecto) =>{
-        proyecto.id = uuidv4();
-        //insertar proyeto al state
-        dispatch({
-            type: AGREGAR_PROYECTOS,
-            payload : proyecto
-        })
+    const  agregarProyecto = async (project) =>{
+        try {
+            const resultado = await clienteAxios.post('/api/projects', project);
+            console.log(resultado);
+            dispatch({
+                type: AGREGAR_PROYECTOS,
+                payload : resultado.data
+            })
+        } catch (error) {
+            const alerta ={
+                msg:"Error, can't delete",
+                categoria: 'alerta-error'
+            }
+            dispatch({
+                type:PROYECTO_ERROR,
+                payload:alerta
+            })
+        }
 
     }
 
@@ -79,21 +99,34 @@ const ProyectoState = props => {
     }
 
     //eliminar proyecto
-    const eliminarProyecto = (proyectoId) =>{
-        dispatch({
-            type:ELIMINAR_PROYECTO,
-            payload: proyectoId
+    const eliminarProyecto = async (proyectoId) =>{
+        try {
+            await clienteAxios.delete(`/api/projects/${proyectoId}`);
+            dispatch({
+                type:ELIMINAR_PROYECTO,
+                payload: proyectoId
 
-        })
+            })
+        } catch (error) {
+            const alerta ={
+                msg:"Error, can't delete",
+                categoria: 'alerta-error'
+            }
+            dispatch({
+                type:PROYECTO_ERROR,
+                payload:alerta
+            })
+        }
     }
 
     return(
         <proyectoContext.Provider
             value={{
-                proyectos: state.proyectos,
+                projects: state.projects,
                 formulario : state.formulario,
                 errorformulario : state.errorformulario,
-                proyecto: state.proyecto,
+                project: state.project,
+                mensaje:state.mensaje,
                 mostrarFormulario,
                 obtenerProyectos,
                 agregarProyecto,

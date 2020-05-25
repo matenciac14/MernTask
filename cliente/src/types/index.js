@@ -5,6 +5,7 @@ export const AGREGAR_PROYECTOS = 'AGREGAR_PROYECTOS';
 export const VALIDAR_FORMULARIO = 'VALIDAR_FORMULARIO';
 export const PROYECTO_ACTUAL = 'PROYECTO_ACTUAL';
 export const ELIMINAR_PROYECTO = 'ELIMINAR_PROYECTO';
+export const PROYECTO_ERROR = 'PROYECTO_ERROR';
 
 //type tareas
 export const TAREAS_PROYECTO = 'TAREAS_PROYECTO';
@@ -18,4 +19,12 @@ export const ACTUALIZAR_TAREA = 'ACTUALIZAR_TAREA';
 //types alertas
 export const MOSTRAR_ALERTA = 'MOSTRAR_ALERTA';
 export const OCULTAR_ALERTA = 'OCULTAR_ALERTA';
+
+//types autenticacion
+export const REGISTRO_EXITOSO = 'REGISTRO_EXITOSO';
+export const REGISTRO_ERROR = 'REGISTRO_ERROR';
+export const OBTENER_USUARIO = 'OBTENER_USUARIO';
+export const LOGIN_EXITOSO = 'LOGIN_EXITOSO';
+export const LOGIN_ERROR = 'LOGIN_ERROR';
+export const CERRAR_SESION = 'CERRAR_SESION';
 

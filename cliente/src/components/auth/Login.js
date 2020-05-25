@@ -1,23 +1,43 @@
-import React,{useState} from 'react';
+import React,{useState, useContext, useEffect} from 'react';
 import {Link} from 'react-router-dom';
+import AlertaContext from '../../context/alertas/alertasContext';
+import AuthContext from '../../context/autenticacion/authContext';
 
 
 
+const Login = (props) => {
+    //extraemos valores de alertas
+    const alertaContext = useContext(AlertaContext);
+    const {alerta, mostrarAlerta} = alertaContext;
 
-const Login = () => {
+    //context autenticacion
+    const authContext = useContext(AuthContext);
+    const {mensaje, autenticado, iniciarSesion} = authContext;
+    //password o user  incorrect
+    useEffect(() => {
+        if(autenticado){
+            props.history.push('/proyectos')
+        }
+        if(mensaje){
+        mostrarAlerta(mensaje.msg, mensaje.categoria);
+   
+        }
+        //eslint-disable-next-line
+    }, [mensaje, autenticado, props.history])
+
     //state para iniciar sesion
-    const[usuario, guardarUsuario] = useState({
+    const[user, guardarUsuario] = useState({
         email :'',
         password :''
     });
     //extraer de usuario
-    const { email, password } = usuario;
+    const { email, password } = user;
 
 
     //funcion lee formulario
     const onChange = (e) =>{
         guardarUsuario({
-            ...usuario,
+            ...user,
             [e.target.name] : e.target.value
         })
         
@@ -27,9 +47,12 @@ const Login = () => {
         e.preventDefault();
 
         //validacion
+        if(email.trim()==='' || password.trim()===''){
+            mostrarAlerta('Todos los Campos son Obligatorios', 'alerta-error');
+        }
 
         //pasar al action
-
+        iniciarSesion({email, password})
     }
 
 
@@ -39,6 +62,8 @@ const Login = () => {
 
     return (
         <div className="form-usuario">
+            {alerta ? (<div className={`alerta ${alerta.categoria}`}> {alerta.msg} </div>): null}
+
             <div className="contenedor-form sombre-dark">
                 <h1>Iniciar sesion</h1>
                 <form 

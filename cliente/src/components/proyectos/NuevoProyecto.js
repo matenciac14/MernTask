@@ -7,17 +7,17 @@ const NuevoProyecto = () => {
   const {formulario,errorformulario, mostrarFormulario, agregarProyecto, mostrarError } = proyectosContext;
 
   //state
-  const [ proyecto, guardarProyecto ] = useState({
-    nombre:''
+  const [ project, guardarProyecto ] = useState({
+    name:''
 
   });
   //extrae nombre
-  const {nombre} = proyecto;
+  const {name} = project;
 
   //contenido del input
   const onChangeProyecto =(e)=>{
     guardarProyecto({
-      ...proyecto,
+      ...project,
       [e.target.name] : e.target.value
     })
   }
@@ -26,16 +26,16 @@ const NuevoProyecto = () => {
 const onSubmitProyecto = (e)=>{
   e.preventDefault();
 //validar
-if(nombre === ''){
+if(name === ''){
   mostrarError(true);
   return;
 } 
 
 //agregar al state
-agregarProyecto(proyecto)
+agregarProyecto(project)
 //reiniciar
 guardarProyecto({
-  nombre: ''
+  name: ''
 })
 
 }
@@ -52,7 +52,7 @@ const onClickFormulario =()=>{
         {formulario ?
         (
           <form className='formulario-nuevo-proyecto' onSubmit={onSubmitProyecto}>
-            <input type="text" className='input-text' placeholder='Nombre Proyecto' name='nombre' onChange={onChangeProyecto} value={nombre}/>
+            <input type="text" className='input-text' placeholder='Nombre Proyecto' name='name' onChange={onChangeProyecto} value={name}/>
             <input type="submit" className='btn btn-primario btn-block' value='Agregar Proyecto'/>
           </form>
 

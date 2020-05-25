@@ -9,23 +9,22 @@ import {CSSTransition, TransitionGroup}from 'react-transition-group';
 const ListadoTareas = () => {
 
 const proyectosContext = useContext(proyectoContext);
-const {proyecto, eliminarProyecto } = proyectosContext;
+const {project, eliminarProyecto } = proyectosContext;
 
 const tareasContext = useContext(tareaContext);
 const {tareasproyecto} = tareasContext;
 
     //s no existe un proyecto en nuestro state
-    if(!proyecto) return <h2>Selecciona un proyecto</h2>
+    if(!project) return <h2>Selecciona un proyecto</h2>
 
     //destructuring para extraer e proyecto actual
-    const [proyectoActual] = proyecto;
-
-
-
-
+    const [proyectoActual] = project;
     return (
       <Fragment>
-        <h2>Proyecto: {proyectoActual.nombre}</h2>
+          <div className="">
+          <h2>Proyecto:  {proyectoActual.name}</h2>
+          </div>
+        
         <ul className="listado-tareas">
             {tareasproyecto.length === 0 ?
             (
@@ -51,7 +50,7 @@ const {tareasproyecto} = tareasContext;
         <button
             type='button'
             className='btn btn-primario'
-            onClick={() => eliminarProyecto(proyectoActual.id)}
+            onClick={() => eliminarProyecto(proyectoActual._id)}
         >Eliminar Proyecto &times;</button>
       </Fragment>
     );
