@@ -5,7 +5,7 @@ import tareaContext from '../../context/tareas/tareaContext';
 
 const FormTarea = () => {
 const proyectosContext = useContext(proyectoContext);
-const {proyecto } = proyectosContext;
+const {project } = proyectosContext;
 
 //obtener funcion de context de tarea
 const tareasContext = useContext(tareaContext);
@@ -17,30 +17,30 @@ const {agregarTarea, validarTarea, errortarea, obtenerTareas,tareaseleccionada, 
        guardarTarea(tareaseleccionada)
    }else{
        guardarTarea({
-           nombre:''
+           name:''
        })
    }
      
  }, [tareaseleccionada])
 
 //state local
-    const [tarea, guardarTarea]= useState({
-        nombre: ''
+    const [task, guardarTarea]= useState({
+        name: ''
     })
 
-    //extraer nombre del proyecto
-    const {nombre} = tarea;
+    //extraer nombre 
+    const {name} = task;
 
     //si no existe un proyecto en nuestro state
-    if(!proyecto) return null;
+    if(!project) return null;
 
     //destructuring para extraer e proyecto actual
-    const [proyectoActual] = proyecto;
+    const [proyectoActual] = project;
 
     //leer los valores
     const handlechange = e =>{
         guardarTarea({
-            ...tarea,
+            ...task,
             [e.target.name]: e.target.value
         })
     }
@@ -49,18 +49,17 @@ const {agregarTarea, validarTarea, errortarea, obtenerTareas,tareaseleccionada, 
         e.preventDefault();
 
         //validarform
-        if(nombre.trim()===''){
+        if(name.trim()===''){
             validarTarea();
             return;
         }
         // validacion para editar o agegar
         if(tareaseleccionada === null){
             //agregar nueva tarea
-            tarea.proyectoId = proyectoActual.id;
-            tarea.estado = false
-            agregarTarea(tarea);
+            task.project = proyectoActual._id
+            agregarTarea(task);
         }else{
-            actualizarTarea(tarea);
+            actualizarTarea(task);
         }
 
         
@@ -70,7 +69,7 @@ const {agregarTarea, validarTarea, errortarea, obtenerTareas,tareaseleccionada, 
 
         //reiniciar el form
         guardarTarea({
-            nombre: ''
+            name: ''
         })
 
     }
@@ -85,8 +84,8 @@ const {agregarTarea, validarTarea, errortarea, obtenerTareas,tareaseleccionada, 
                         type="text" 
                         className='input-text' 
                         placeholder='Nombre-tarea...' 
-                        name='nombre'
-                        value={nombre}
+                        name='name'
+                        value={name}
                         onChange={handlechange} 
                     />
                 </div>
@@ -98,7 +97,7 @@ const {agregarTarea, validarTarea, errortarea, obtenerTareas,tareaseleccionada, 
                     />
                 </div>
             </form>
-            {errortarea ? <p className="mensaje error"> el nombre d ela tarea es obligatorio</p> :null}
+            {errortarea ? <p className="mensaje error"> el nombre de la tarea es obligatorio</p> :null}
         </div>
     )
 }

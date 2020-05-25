@@ -6,14 +6,13 @@ const {validationResult} = require('express-validator');
 exports.getTasks = async (req, res) =>{
     try {
         //get and validate  project
-        const {project} = req.body;
+        const {project} = req.query;
         //review id 
         const projectExist = await Project.findById(project);
         
         //project exists
         if(!projectExist){
-            return res.status(400).json({errors: errors.array()})
-            //return res.status(404).json({msg: 'project not found'})
+            return res.status(404).json({msg: 'project not found'})
         }
         
         //project creator  is valid
@@ -21,7 +20,7 @@ exports.getTasks = async (req, res) =>{
             return res.status(401).json({msg:'unauthorized'});
         }
         //get tasks by project id
-        const tasks = await Task.find({project});
+        const tasks = await Task.find({project}).sort({create: -1});
         res.json({tasks})
         
     } catch (error) {
@@ -90,12 +89,8 @@ exports.updateTask = async(req,res) =>{
 
         //create new object with  new task
         const newTask = {}
-        if(name){
             newTask.name = name;
-        }
-        if(state){
             newTask.state = state;
-        }
         
         //save  and update tasks
         task = await Task.findOneAndUpdate({_id : req.params.id}, newTask, {new: true});
@@ -111,7 +106,7 @@ exports.updateTask = async(req,res) =>{
 exports.deleteTask = async(req,res) =>{
     try {
         //get and validate  project
-        const {project} = req.body;
+        const {project} = req.query;
         //review id 
         let task = await Task.findById(req.params.id);
         

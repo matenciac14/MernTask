@@ -19,6 +19,8 @@ const {tareasproyecto} = tareasContext;
 
     //destructuring para extraer e proyecto actual
     const [proyectoActual] = project;
+
+
     return (
       <Fragment>
           <div className="">
@@ -31,18 +33,20 @@ const {tareasproyecto} = tareasContext;
                 <li className="tarea">No hay tareas</li>
             ): 
                 <TransitionGroup>
-                    {tareasproyecto.map(tarea =>(
+                    {tareasproyecto.map(task =>( 
+                        
                     <CSSTransition
-                        key={tarea.id}
+                        key={task._id}
                         timeout={300}
                         classNames="tarea"
                     >
+
                         <Tarea
                             
-                            tarea={tarea}
+                            task={task}
                         />
                     </CSSTransition>                    
-                ))}
+                )) } 
                 </TransitionGroup>
             }
             
